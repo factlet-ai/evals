@@ -1,6 +1,16 @@
 # Results — Tier 1 scaffold run (N=6, May 2026)
 
-N=6 tasks per condition. Single-author task set. The run is too small to support an aggregate headline; the per-task table is the substantive output.
+## Summary
+
+Three frontier models (Claude Sonnet 4.6, GPT-4.1, Gemini 2.0 Flash) were tested on 6 hand-crafted developer tasks, each in two conditions: with and without a team-specific factbook in context. Three LLM judges scored each response across 5 metrics — 810 judge calls total.
+
+With a factbook in context: median quality rose from 2.7 to 4.1 (1–5 scale), responses rated as harmful-if-shipped fell from 61% of cells to 14%, and contradictions of documented team policy fell from ~0.67 per response to 0. The direction and magnitude survive when the same-family judge (Claude judging Claude) is excluded from the consensus.
+
+The lift is not uniform. It concentrates on tasks where the model's default answer (from public training data) conflicts with a documented team decision — refunds older than 90 days, libraries the team retired, compliance rules. On tasks where general knowledge already matches team policy, adding the factbook makes essentially no difference.
+
+What this run does NOT support: a single-percentage headline ("X% better"), per-vendor leaderboards, statistical significance claims, or comparison to retrieval-augmented baselines (no RAG arm in this run). N=6 tasks with a single task author is below the threshold for those claims. A Tier 2 run at N≥100 with externally-authored tasks and a vanilla-RAG comparator is the next milestone where an aggregate claim is on the table.
+
+Detail, per-task table, robustness checks, limitations, and reproduction instructions follow.
 
 ## Setup
 
@@ -32,16 +42,18 @@ Risk: 11/18 cells without factbook rated `high` shipping-risk; 1/36 with factboo
 
 ### Robustness check excluding same-family judge
 
-One of the three judges (Claude Sonnet 4.6) shares a model family with one of the generators. Recomputing consensus on only GPT-4.1 + Gemini 2.0 Flash judges:
+One of the three judges (Claude Sonnet 4.6) is from the same model family as one of the three generators (also Claude Sonnet 4.6). Same-family bias — a judge favoring outputs from its own family — is a documented failure mode in LLM-as-judge evaluation. If that bias were inflating the headline numbers above, the apparent benefit would shrink or disappear when the Claude judge is removed from the consensus.
 
-| Metric | full 3-judge | GPT+Gemini only |
-|---|---:|---:|
-| Quality Δ | +1.39 | +1.33 |
-| Citation Δ | +0.52 | +0.50 |
-| Coverage Δ | +0.47 | +0.39 |
-| Contradiction Δ | −0.67 | −0.61 |
+The check: recompute every delta using only the GPT-4.1 and Gemini 2.0 Flash judges (the two judges that have no family connection to anything they're scoring).
 
-Direction and magnitude survive within 0.06 points.
+| Metric | full 3-judge | GPT+Gemini only | Movement |
+|---|---:|---:|---:|
+| Quality Δ | +1.39 | +1.33 | 0.06 |
+| Citation Δ | +0.52 | +0.50 | 0.02 |
+| Coverage Δ | +0.47 | +0.39 | 0.08 |
+| Contradiction Δ | −0.67 | −0.61 | 0.06 |
+
+The deltas barely change — the largest movement is 0.08 points. The lift is not an artifact of the same-family judge.
 
 ## Naive markdown vs structured per-vendor rendering
 
