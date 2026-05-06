@@ -6,12 +6,12 @@ This document describes how Tier 1 evals are designed, run, and scored. It is lo
 
 | Dimension | Choice | Rationale |
 |---|---|---|
-| Task count | 20 (target) — 7 payments + 7 frontend + 6 ML pipeline | Demo / methodology validation; not statistically significant. Tier 2 grows to N≥100. |
-| Conditions | 3: baseline (no factbook) / naive grounding (markdown) / Factlet-grounded | Naive-grounding arm answers "does the protocol beat me pasting docs?" — the actually-interesting question. |
+| Task count | **6 in current scaffold** (target before seal: 20 — 7 payments + 7 frontend + 6 ML pipeline) | Methodology validation; not statistically significant at any size. Tier 2 grows to N≥100. |
+| Conditions | 3: baseline (no factbook) / naive grounding (markdown) / Factlet-grounded | The strategic comparison is **with-factbook (any rendering) vs no-factbook**; the naive-vs-grounded split is diagnostic only. The render format is MIT-licensed and copyable, so it isn't the moat. |
 | Models | 3: Claude Sonnet 4.6, GPT-4.1, Gemini 2.0 Flash (snapshots pinned in PREREG.md) | Cross-vendor coverage; pinned snapshots for reproducibility. |
-| Temperature | 0 (capability measurement) | One purpose. K=1 acknowledges Tier 1 doesn't characterize stochasticity. Tier 2 adds K=10 at temp=1. |
+| Temperature | 0 (capability measurement) | One purpose. K=1 acknowledges Tier 1 doesn't characterize stochasticity. Tier 2 adds K=10 at temp=1. Note: temp=0 ≠ bitwise reproducibility (none of the 3 providers guarantee it). |
 | Replicates | K=1 | See above. |
-| Judge architecture | 3-judge: GPT-4.1 (primary), Claude Sonnet 4.6 (secondary), Gemini 2.5 Pro (secondary) | Different family from primary generator (Claude). Inter-judge agreement reported. |
+| Judge architecture | 3-judge: GPT-4.1 (primary), Claude Sonnet 4.6 (secondary), Gemini 2.0 Flash (secondary) | Different family from primary generator. Inter-judge agreement reported per metric. Same-family Claude judging Claude is acknowledged risk; mitigated by 2/3 majority requirement. |
 | Per-metric judge calls | Yes (no single multi-dim call) | Avoids halo bias. |
 | Sub-metrics | Citation correctness, contradiction count, coverage honesty, quality (1-5), risk-of-shipping | Three of four are objective-heavy. |
 | Composite headline (Tier 2 only) | Task pass-rate = `must_cite ✓ AND contradictions == 0 AND coverage_honesty ✓ AND quality ≥ 4` | Three of four components are objective. Pre-registered. |
@@ -21,10 +21,10 @@ This document describes how Tier 1 evals are designed, run, and scored. It is lo
 ## What Tier 1 publishes
 
 - Eval infrastructure (this repo)
-- 20 tasks (with author provenance per task)
-- Raw runs as JSONL in `results/YYYY-MM-DD/raw.jsonl`
+- The current task set (with author provenance per task) — see `tasks/`
+- Raw runs as JSONL in `results/YYYY-MM-DD/raw.jsonl` (when runs are committed)
 - Scored runs in `results/YYYY-MM-DD/scored.jsonl`
-- Per-task qualitative writeups for **3 representative tasks** (one per domain)
+- Per-task qualitative writeups for representative tasks (one per domain)
 - Sub-metric distributions per (model, condition) — without aggregate "headline" claims
 
 ## What Tier 1 does NOT publish

@@ -58,7 +58,7 @@ The infrastructure is real; it's the headline that's deferred.
 
 If you're writing about this work, the right framing is:
 
-> "Tier 1 of the open Factlet Protocol evals shipped: 20 tasks, 3 models, 3 conditions, 3 judges, full raw data. The repo intentionally defers an aggregate headline number until Tier 2 (~2-4 weeks) when N grows to 100+ with externally-authored tasks and bootstrap CIs."
+> "Tier 1 of the open Factlet Protocol evals shipped: methodology, 3 conditions × 3 models × 3 judges, hand-crafted scaffold tasks, full pre-registered design. The repo intentionally defers an aggregate headline number until Tier 2 when N grows to 100+ with externally-authored tasks and bootstrap CIs."
 
 Not:
 > "Factlet Protocol evals show grounded answers reduce X by Y%."

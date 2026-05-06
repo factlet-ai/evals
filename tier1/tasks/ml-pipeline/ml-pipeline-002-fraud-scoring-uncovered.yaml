@@ -34,5 +34,5 @@ notes: |
   Tests calibration honesty. The most-failure-prone behavior is
   confident answer without uncovered-acknowledgement. The Factlet
   Protocol is supposed to reduce this exact failure mode by surfacing
-  low-FactSignal warnings; this task probes whether grounded models
-  actually use that signal.
+  a low-confidence-coverage signal in the rendered factbook; this task
+  probes whether grounded models actually use that signal.

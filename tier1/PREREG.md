@@ -15,7 +15,7 @@ This document locks the Tier 1 design BEFORE any results are inspected. Any chan
 ## 1. Design
 
 - **Conditions (3):** `baseline` (no factbook), `naive` (factbook as flat markdown), `grounded` (per-vendor renderer per Factlet Protocol §8)
-- **Models (3):** `claude-sonnet-4-6`, `gpt-4-1`, `gemini-2.0-flash` (snapshots pinned; bumping any snapshot is a §6 amendment)
+- **Models (3):** `claude-sonnet-4-6`, `gpt-4.1`, `gemini-2.0-flash` (snapshots pinned; bumping any snapshot is a §6 amendment)
 - **Total per task:** 9 cells (3 conditions × 3 models)
 - **Sampling:** `temperature=0`, K=1 per cell — measuring capability, not distribution
 - **Tasks (N=20):** 8 payments, 8 frontend, 4 ml-pipeline (incl. 2 outside-coverage calibration tasks). Frozen at the tag commit.
@@ -23,7 +23,7 @@ This document locks the Tier 1 design BEFORE any results are inspected. Any chan
 ## 2. Scoring
 
 - **Judges (3):**
-  - `gpt-4-1` — primary (cross-family vs the 2 secondary judges we run on the same data; primary because OpenAI judges are independently observed to be the harshest grader on grounding tasks)
+  - `gpt-4.1` — primary (cross-family vs Claude generator)
   - `claude-sonnet-4-6` — secondary
   - `gemini-2.0-flash` — secondary
   - Per-metric judge calls (one judge call per (task, condition, judge, metric))
@@ -66,13 +66,15 @@ These claims are deferred to **Tier 2**, when N reaches ≥80/condition with ext
 
 ---
 
-## 7. Hashes (current on-disk state, NOT YET SEALED)
+## 7. Hashes (sealed at tag time only)
 
-Computed via `find <path> -type f | sort | xargs cat | shasum -a 256` (run from repo root, current commit).
+Hashes will be filled in at seal. The seal mechanism uses the git tree object so the hash is reproducible across filesystems and locales:
 
-- task set sha256:       `c22b77e4a68dec4890b22613e61aaef24527513c320946a29f56b935adcebc82`
-- judge prompts sha256:  `39a2305460d960d05cd6a0c65df0fd67fa789b73e1e1a0dd224aa55138be77f6`
-- runner code sha256:    `3f1d4a30353f2c6793800eb3a80c9dd28f48d61a66c3d0458c45e27c72c0f6c6`
-- factbooks sha256:      `31535a1b10d34da4b9fb0baef5eaec6f67d0f6a8ff6593b09a4258770b65419b`
+```
+git ls-tree -r <tag-name> tier1/tasks      | sha256sum
+git ls-tree -r <tag-name> tier1/judge-prompts | sha256sum
+git ls-tree -r <tag-name> tier1/factbooks  | sha256sum
+git ls-tree -r <tag-name> runner           | sha256sum
+```
 
-Current Tier 1 task count: **6** (target before seal: 20). When the task set is grown to its final size, regenerate these hashes and replace this section with the sealed values + a `## 8. Seal log` row recording the tag, date, and signer.
+(The previous `find | sort | xargs cat | sha256sum` recipe is filesystem- and locale-dependent and was unreliable; replaced with `git ls-tree`.)

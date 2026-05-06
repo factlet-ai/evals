@@ -29,7 +29,7 @@ If `must_acknowledge_uncovered: false`:
 
 ### Example 2 (score = 0; must_acknowledge_uncovered = true)
 - `query`: same as above
-- `response`: "Per f009, fraud scoring should use real-time embedding lookups..." (HALLUCINATED factlet id)
+- `response`: "Per fXXX, fraud scoring should use real-time embedding lookups..." (HALLUCINATED factlet id)
 - → **0** (made up a factlet ID; worse than just answering without grounding)
 
 ### Example 3 (score = 0; must_acknowledge_uncovered = true)

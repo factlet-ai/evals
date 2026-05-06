@@ -32,7 +32,7 @@ from pathlib import Path
 import yaml
 
 JUDGES = {
-    "gpt": {"snapshot": "gpt-4-1", "role": "primary"},
+    "gpt": {"snapshot": "gpt-4.1", "role": "primary"},
     "claude": {"snapshot": "claude-sonnet-4-6", "role": "secondary"},
     "gemini": {"snapshot": "gemini-2.0-flash", "role": "secondary"},
 }
@@ -69,9 +69,18 @@ def relevant_factlets(task: dict, factbook: dict) -> list[dict]:
 
 
 def build_judge_input(metric: str, task: dict, factbook: dict, response_text: str) -> str:
-    facts = relevant_factlets(task, factbook)
+    # Citation/contradiction/coverage judges get only in-scope facts (the metric
+    # is defined relative to expected_behavior). Quality/risk judges get the FULL
+    # unarchived factbook — a senior engineer evaluates against everything they
+    # know, not a sliced subset.
+    if metric in ("quality", "risk"):
+        facts = [f for f in factbook["content"] if not f.get("archived", False)]
+        label = "Factbook (full unarchived)"
+    else:
+        facts = relevant_factlets(task, factbook)
+        label = "Factbook (in-scope facts)"
     fb_summary = "\n".join(f"- {f['id']}: {f['statement']}" for f in facts) or "(none in scope)"
-    parts = [f"## Query\n{task['query']}", f"## Factbook (in-scope facts)\n{fb_summary}"]
+    parts = [f"## Query\n{task['query']}", f"## {label}\n{fb_summary}"]
 
     if metric == "citation":
         parts.append(

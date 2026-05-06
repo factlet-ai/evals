@@ -14,7 +14,7 @@ A reproducible benchmark harness that compares LLM behavior under three conditio
 
 …across three frontier models (Claude Sonnet 4.6, GPT-4.1, Gemini 2.0 Flash) on hand-crafted tasks across three domains (payments, frontend, ML pipeline).
 
-The interesting comparison is **#3 vs #2** — does the protocol's structured grounding actually beat naive doc-paste? Skeptics ask this; this eval answers it.
+The strategic comparison is **with-factbook (any rendering) vs no-factbook** — does giving the model your team's truth in context measurably reduce harmful or off-policy output? The diagnostic comparison **#3 vs #2** also gets reported but isn't the moat: the rendering format is MIT-licensed and trivially copyable. The moat is auto-generating and maintaining the factbook from your codebase + git history.
 
 ## Repo layout
 
@@ -49,7 +49,7 @@ pip install -e .
 # Set API keys (BYOK — no provider lock-in)
 export ANTHROPIC_API_KEY=sk-ant-...
 export OPENAI_API_KEY=sk-...
-export GOOGLE_API_KEY=AIza...
+export GOOGLE_API_KEY=AIza...   # GEMINI_API_KEY also accepted
 
 # Validate task YAML
 python validate.py --tasks ../tier1/tasks --factbooks ../tier1/factbooks
@@ -60,19 +60,20 @@ python run.py \
   --output ../results/$(date +%Y-%m-%d)
 
 # Score with 3 judges (per-metric)
+RUN_DIR=../results/$(date +%Y-%m-%d)
 python score.py \
-  --raw ../results/2026-05-DD/raw.jsonl \
+  --raw $RUN_DIR/raw.jsonl \
   --tasks ../tier1/tasks --factbooks ../tier1/factbooks \
   --prompts ../tier1/judge-prompts \
-  --output ../results/2026-05-DD/scored.jsonl
+  --output $RUN_DIR/scored.jsonl
 
 # Aggregate to markdown reports (summary + per-task detail + agreement)
 python aggregate.py \
-  --scored ../results/2026-05-DD/scored.jsonl \
-  --output ../results/2026-05-DD
+  --scored $RUN_DIR/scored.jsonl \
+  --output $RUN_DIR
 ```
 
-Estimated cost per full cycle: **~$10** (360 generation calls × 3 models + 1080 judge calls × 3 judges).
+Cost at the current 6-task scaffold: **~$2.50** (54 generation calls + 810 judge calls). Scales linearly with task count and judge count.
 
 ## Pre-registration
 
@@ -98,7 +99,7 @@ To contribute a task:
 See `docs/FACTLET-EVALS-BACKLOG.md` in the [main Kernora project](https://kernora.ai) for what's coming. Highlights:
 
 - **Tier 2 (~2-4 weeks)**: N=100+ tasks, externally-authored, bootstrap CIs, multi-judge consensus, vanilla-RAG comparison, **headline aggregate number published**.
-- **Tier 3 (~3 months, alongside spec v0.2)**: conformance test suite, retrieval-quality benchmarks, FactSignal calibration evals, continuous-eval infrastructure.
+- **Tier 3 (~3 months, alongside spec v0.2)**: conformance test suite, retrieval-quality benchmarks, calibration evals on the protocol's confidence signal (low-confidence-coverage warnings), continuous-eval infrastructure.
 
 ## License
 

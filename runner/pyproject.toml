@@ -20,5 +20,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
 
+# Runner is a flat collection of scripts, not an importable package.
+# Use `python run.py …` after `pip install -e .` (which installs deps).
 [tool.hatch.build.targets.wheel]
-packages = ["runner"]
+bypass-selection = true

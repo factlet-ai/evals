@@ -10,7 +10,7 @@ Outputs JSONL to <output>/raw.jsonl with one line per (task, condition) run.
 Usage:
   export ANTHROPIC_API_KEY=sk-ant-...
   export OPENAI_API_KEY=sk-...
-  export GOOGLE_API_KEY=AIza...
+  export GOOGLE_API_KEY=AIza...   # GEMINI_API_KEY also accepted
   python run.py --tasks ../tier1/tasks --factbooks ../tier1/factbooks --output ../results/2026-05-DD
 """
 
@@ -30,7 +30,7 @@ import yaml
 # Pinned model snapshots — change requires PREREG amendment
 MODELS = {
     "claude": {"provider": "anthropic", "snapshot": "claude-sonnet-4-6"},
-    "gpt": {"provider": "openai", "snapshot": "gpt-4-1"},
+    "gpt": {"provider": "openai", "snapshot": "gpt-4.1"},
     "gemini": {"provider": "google", "snapshot": "gemini-2.0-flash"},
 }
 
@@ -46,9 +46,12 @@ def render_factbook_for_naive(factbook: dict) -> str:
 
     Mimics what a developer would do if they pasted their docs into
     the system prompt without using the protocol's renderers.
+    Same archived-fact filter as grounded for apples-to-apples comparison.
     """
     lines = ["# Project knowledge", ""]
     for f in factbook["content"]:
+        if f.get("archived", False):
+            continue
         lines.append(f"- {f['statement']}")
         if f.get("sources"):
             lines.append(f"  (sources: {', '.join(str(s) for s in f['sources'])})")
@@ -118,7 +121,7 @@ def call_claude(system: str | None, user: str, model_snapshot: str) -> dict:
     import anthropic
 
     client = anthropic.Anthropic()
-    kwargs = {"model": model_snapshot, "max_tokens": 1024, "temperature": 0,
+    kwargs = {"model": model_snapshot, "max_tokens": 4096, "temperature": 0,
               "messages": [{"role": "user", "content": user}]}
     if system:
         kwargs["system"] = system
@@ -158,8 +161,8 @@ def call_gemini(system: str | None, user: str, model_snapshot: str) -> dict:
 
     client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY") or os.environ["GOOGLE_API_KEY"])
     config = types.GenerateContentConfig(
-        system_instruction=system, max_output_tokens=1024, temperature=0,
-    ) if system else types.GenerateContentConfig(max_output_tokens=1024, temperature=0)
+        system_instruction=system, max_output_tokens=4096, temperature=0,
+    ) if system else types.GenerateContentConfig(max_output_tokens=4096, temperature=0)
     t0 = time.time()
     resp = client.models.generate_content(
         model=model_snapshot, contents=user, config=config,

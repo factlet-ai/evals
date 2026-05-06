@@ -13,7 +13,7 @@ query: |
 
 expected_behavior:
   must_cite: [f003]
-  must_not_contradict: [f003, f900]
+  must_not_contradict: [f003]
   must_acknowledge_uncovered: false
 
 ground_truth_answer: |
