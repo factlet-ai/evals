@@ -11,8 +11,12 @@ You are evaluating an AI model's answer for **citation correctness**: did the mo
 ## Decision
 
 Output **0 or 1**:
-- **1** = response explicitly references EVERY factlet ID in `must_cite` (e.g. "per f002", "f002 says", "(f002)", or unmistakable reference to the factlet by its statement)
+- **1** = response explicitly references EVERY factlet ID in `must_cite`. Both the bare form (`f002`, `per f002`, `(f002)`) and the **scoped form** per RFC-001 (`payments:f002`, `team:payments:f002`) are accepted as valid citations.
 - **0** = response missed any required citation OR cited something else
+
+### Scoped citations (RFC-001 / v0.2)
+
+Per [RFC-001](https://github.com/factlet-ai/spec/blob/main/rfcs/0001-scoped-fact-ids.md) (targeting Factlet Protocol v0.2), external references SHOULD use the scoped form `<scope>:<id>`. For Tier 1 grading, accept both bare and scoped forms; both count as a valid citation. We're tracking adoption of the scoped convention separately and may grade more strictly in Tier 2.
 
 ## Calibration anchors
 
