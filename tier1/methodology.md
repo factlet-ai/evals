@@ -34,15 +34,15 @@ This document describes how Tier 1 evals are designed, run, and scored. It is lo
 - Confidence intervals on aggregate proportions (would be misleading at N=20)
 - Cost claims (single-turn evals can't capture multi-turn correction loops)
 
-## Known limitations (transparent)
+## Known limitations
 
-1. **N=20 is small.** Per (model, condition) cell after analysis, you have 20 binary outcomes — Wilson 95% CI is roughly ±20pp. We don't claim significance.
-2. **Author bias risk.** Tier 1 tasks are mostly authored by the protocol author. The construct-validity fix (≥5 externally-authored tasks) is a Tier 2 ship-gate.
-3. **Factbook size is small.** Each example factbook has 5-8 factlets. Real factbooks have 50-200. Tier 2 will use larger factbooks.
-4. **Distractor injection not tested in Tier 1.** Tier 2 adds tasks with irrelevant factlets in the context to test attention.
-5. **No vanilla-RAG comparison in Tier 1.** Tier 2 adds an `embedding-RAG` arm.
-6. **Judge-prompt design effect.** 80% of LLM-as-judge variance lives in prompt design; we mitigate via per-metric calls and calibration anchors but don't eliminate.
-7. **Data-leakage check is heuristic.** We can't verify whether example factbook content is in any specific model's training set.
+1. **N=20 is small.** 20 binary outcomes per (model, condition) cell gives Wilson 95% CI of ~±20pp. No significance claims.
+2. **Author bias.** Tier 1 tasks are mostly authored by the protocol author. Tier 2 requires ≥5 externally-authored tasks.
+3. **Small factbooks.** Example factbooks have 5–8 factlets each; real factbooks have 50–200. Tier 2 uses larger factbooks.
+4. **No distractor injection.** Tier 2 adds tasks with irrelevant factlets in context.
+5. **No vanilla-RAG comparison.** Tier 2 adds an `embedding-RAG` arm.
+6. **Judge-prompt design effect.** ~80% of LLM-as-judge variance lives in prompt design; per-metric calls and calibration anchors mitigate but don't eliminate.
+7. **Data-leakage check is heuristic.** Whether example factbook content is in any specific model's training set is not verifiable.
 
 ## Why no headline number yet
 

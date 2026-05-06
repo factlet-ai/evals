@@ -81,7 +81,7 @@ Tier 1's task set, judge prompts, scoring rubric, and analysis plan are pre-regi
 
 ## Results so far
 
-A first run (N=6 tasks, single-author scaffold) is published for transparency at [`docs/RESULTS-N6-MAY-2026.md`](docs/RESULTS-N6-MAY-2026.md). **Do not extract a single-number headline from this run** — the doc is explicit about why N=6 + single-author can't support that. Per-task heterogeneity (where the factbook helps, where it doesn't) is the substantive finding worth reading.
+A first scaffold run (N=6 tasks, single-author) is at [`docs/RESULTS-N6-MAY-2026.md`](docs/RESULTS-N6-MAY-2026.md). The data does not support a single-percentage headline — see the limitations section.
 
 Raw + scored data: [`results/v2/`](results/v2/).
 
@@ -91,7 +91,7 @@ See [`tier1/methodology.md`](tier1/methodology.md) for the full design rationale
 
 ## Contributing tasks
 
-The single highest-leverage contribution is **a task authored by someone other than the protocol author.** Every task in the current scaffold is mihirchoudhary-authored — that's a real construct-validity hole and we won't run a bigger eval until ≥5 externally-authored tasks land.
+Tasks authored by someone other than the protocol author are especially welcome. Every task in the current scaffold is mihirchoudhary-authored; the next eval run is gated on ≥5 externally-authored tasks landing.
 
 **Domains we especially want right now:** security (auth flows, IAM policy, secret handling), devops (Terraform / Kubernetes / CI policies), data engineering (schema decisions, pipeline conventions). Other domains welcome.
 
