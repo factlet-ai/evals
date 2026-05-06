@@ -4,7 +4,7 @@
 
 Three frontier models (Claude Sonnet 4.6, GPT-4.1, Gemini 2.0 Flash) were tested on 6 hand-crafted developer tasks, each in two conditions: with and without a team-specific factbook in context. Three LLM judges scored each response across 5 metrics — 810 judge calls total.
 
-With a factbook in context: median quality rose from 2.7 to 4.1 (1–5 scale), responses rated as harmful-if-shipped fell from 61% of cells to 14%, and contradictions of documented team policy fell from ~0.67 per response to 0. The direction and magnitude survive when the same-family judge (Claude judging Claude) is excluded from the consensus.
+With a factbook in context: median quality rose from 2.7 to 4.1 (1–5 scale), responses rated as harmful-if-shipped fell from 61% to 14%, and contradictions of documented team policy fell from ~0.67 per response to 0. The direction and magnitude survive when the same-family judge (Claude judging Claude) is excluded from the consensus.
 
 The lift is not uniform. It concentrates on tasks where the model's default answer (from public training data) conflicts with a documented team decision — refunds older than 90 days, libraries the team retired, compliance rules. On tasks where general knowledge already matches team policy, adding the factbook makes essentially no difference.
 
@@ -15,13 +15,13 @@ Detail, per-task table, robustness checks, limitations, and reproduction instruc
 ## Setup
 
 - 6 tasks across payments / frontend / ml-pipeline, all authored by the protocol author
-- 3 conditions × 3 models = 9 cells per task → 54 generations
+- 3 conditions × 3 models = 9 responses per task → 54 generations total
 - 3 judges, per-metric, 5 metrics each → 810 judge calls (0 parse failures)
 - temp=0, K=1
 - Pinned snapshots: `claude-sonnet-4-6`, `gpt-4.1`, `gemini-2.0-flash`
 - Cost ~$2.50; wall clock ~50 min
 
-Raw data: [`../results/v2/raw.jsonl`](../results/v2/raw.jsonl) · scored: [`../results/v2/scored.jsonl`](../results/v2/scored.jsonl) · agreement: [`../results/v2/inter_judge_agreement.md`](../results/v2/inter_judge_agreement.md) · per-cell consensus: [`../results/v2/scored_summary.md`](../results/v2/scored_summary.md)
+Raw data: [`../results/v2/raw.jsonl`](../results/v2/raw.jsonl) · scored: [`../results/v2/scored.jsonl`](../results/v2/scored.jsonl) · agreement: [`../results/v2/inter_judge_agreement.md`](../results/v2/inter_judge_agreement.md) · per-response consensus: [`../results/v2/scored_summary.md`](../results/v2/scored_summary.md)
 
 ## With-factbook vs no-factbook
 
@@ -38,7 +38,7 @@ Quality bin distribution:
 - Harmful (≤2): 61% → 14%
 - Good-or-better (≥4): 33% → 78%
 
-Risk: 11/18 cells without factbook rated `high` shipping-risk; 1/36 with factbook.
+Risk: 11 of 18 responses without factbook were rated `high` shipping-risk; 1 of 36 with factbook.
 
 ### Robustness check excluding same-family judge
 
@@ -95,7 +95,7 @@ Lift is proportional to how often the model's training prior diverges from the t
 
 ## Limitations
 
-1. **N=6 tasks.** Wilson 95% CI on a binary outcome at N=18 cells is ~±25pp. Magnitudes are not pinned.
+1. **N=6 tasks.** Wilson 95% CI on a binary outcome at N=18 responses is ~±25pp. Magnitudes are not pinned.
 2. **Single-author task set.** All tasks authored by the protocol author.
 3. **K=1 at temp=0.** Provider-side stochasticity is not characterized; rerunning will produce similar but not identical numbers.
 4. **No retrieval-augmented baseline.** Tier 2 adds a vanilla-RAG arm.
