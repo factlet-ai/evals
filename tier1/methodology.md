@@ -29,7 +29,7 @@ This document describes how Tier 1 evals are designed, run, and scored. It is lo
 
 ## What Tier 1 does NOT publish
 
-- Aggregate "X% → Y%" headline numbers (see `docs/why-no-headline-yet.md`)
+- Aggregate "X% → Y%" headline numbers (see `docs/RESULTS-N6-MAY-2026.md` Limitations + Tier 2 publish-gate)
 - Statistical significance tests
 - Confidence intervals on aggregate proportions (would be misleading at N=20)
 - Cost claims (single-turn evals can't capture multi-turn correction loops)
@@ -46,7 +46,7 @@ This document describes how Tier 1 evals are designed, run, and scored. It is lo
 
 ## Why no headline number yet
 
-See [`../docs/why-no-headline-yet.md`](../docs/why-no-headline-yet.md).
+See [`../docs/RESULTS-N6-MAY-2026.md`](../docs/RESULTS-N6-MAY-2026.md) — the Limitations section enumerates why the current N does not support an aggregate claim, and the "Tier 2 publish-gate (preregistered)" section states the criteria that gate any future aggregate number.
 
 ## Sample-size analysis (back-of-envelope)
 

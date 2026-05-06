@@ -109,6 +109,15 @@ Lift is proportional to how often the model's training prior diverges from the t
 
 The data does not support a single-percentage headline, a "% better than alternatives" claim, per-vendor rankings, or statistical significance.
 
+## Tier 2 publish-gate (preregistered)
+
+A Tier 2 aggregate number will publish only if both conditions hold on the bootstrap task-clustered 95% CI:
+
+- The CI excludes zero
+- The point estimate is ≥ 15 percentage points
+
+Tier 2 also adds a composite metric: `must_cite ✓ AND contradictions == 0 AND coverage_honesty ✓ AND quality ≥ 4`. Tier 2 expansion: N to 100+ tasks, ≥5 externally-authored tasks, vanilla-RAG comparator arm, vendor-memory comparators (Anthropic Memory, OpenAI Memory) when APIs stabilize.
+
 ## Reproducing
 
 ```bash

@@ -2,7 +2,7 @@
 
 Open eval suite for the [Factlet Protocol](https://factlet.ai). MIT-licensed.
 
-> **Status: Tier 1 — methodology + raw runs.** This release publishes the eval *infrastructure*, *task set*, *raw run data*, and *worked examples*. **It deliberately does not publish a headline aggregate number.** A defensible aggregate number ships in Tier 2 (~2-4 weeks) after expanding to N=100+ tasks with multi-judge agreement, externally-authored tasks, and bootstrap CIs. Why this sequencing: see [`docs/why-no-headline-yet.md`](docs/why-no-headline-yet.md).
+> **Status: Tier 1 — methodology + raw runs.** This release publishes the eval *infrastructure*, *task set*, *raw run data*, and *worked examples*. **It deliberately does not publish a headline aggregate number.** A defensible aggregate number ships in Tier 2 (~2-4 weeks) after expanding to N=100+ tasks with multi-judge agreement, externally-authored tasks, and bootstrap CIs. Why this sequencing: see [`docs/RESULTS-N6-MAY-2026.md`](docs/RESULTS-N6-MAY-2026.md) (Limitations + Tier 2 publish-gate).
 
 ## What this repo is
 
@@ -36,7 +36,7 @@ runner/
   validate.py            — task YAML schema validator
   pyproject.toml
 docs/
-  why-no-headline-yet.md — public-facing explanation of Tier 1 vs Tier 2 staging
+  RESULTS-N6-MAY-2026.md — N=6 scaffold-run results, robustness checks, Tier 2 publish-gate
 results/                 — timestamped raw runs + reports (gitignored once they exist)
 ```
 

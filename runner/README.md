@@ -50,7 +50,7 @@ python aggregate.py \
 For Tier 1: methodology + raw runs ONLY. The aggregator emits an
 `scored_summary.md` table and an `inter_judge_agreement.md` page so the
 data is auditable, but **we are not promoting an aggregate headline** at
-N=20 — see `../docs/why-no-headline-yet.md` for why.
+N=20 — see `../docs/RESULTS-N6-MAY-2026.md` (Limitations + Tier 2 publish-gate) for why.
 
 ## Re-running
 
