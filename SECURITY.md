@@ -12,7 +12,7 @@ If you find an issue in any of those areas, please **don't open a public issue**
 
 ## Reporting
 
-Email: choudharymihir@gmail.com with subject `[evals security]`.
+Email: hello@kernora.ai with subject `[evals security]`.
 
 Include: a description of the issue, repro steps, and affected commit SHA. We'll acknowledge within a week and aim to fix or document within two.
 

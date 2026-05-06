@@ -12,6 +12,6 @@ This project follows the [Contributor Covenant](https://www.contributor-covenant
 
 ## Reporting
 
-If you experience or witness behavior that violates the above, contact the project maintainer at choudharymihir@gmail.com.
+If you experience or witness behavior that violates the above, contact the project maintainer at hello@kernora.ai.
 
 Reports are reviewed in confidence. Outcomes may include a private warning, a request for public apology, a temporary block, or a permanent ban depending on severity.
