@@ -14,7 +14,7 @@ A reproducible benchmark harness that compares LLM behavior under three conditio
 
 …across three frontier models (Claude Sonnet 4.6, GPT-4.1, Gemini 2.0 Flash) on hand-crafted tasks across three domains (payments, frontend, ML pipeline).
 
-The strategic comparison is **with-factbook (any rendering) vs no-factbook** — does giving the model your team's truth in context measurably reduce harmful or off-policy output? The diagnostic comparison **#3 vs #2** also gets reported but isn't the moat: the rendering format is MIT-licensed and trivially copyable. The moat is auto-generating and maintaining the factbook from your codebase + git history.
+The primary comparison is **with-factbook (any rendering) vs no-factbook** — does giving the model team-specific truth in context measurably reduce harmful or off-policy output? The secondary comparison **#3 vs #2** is reported as a diagnostic on whether structured per-vendor rendering provides additional lift over naive markdown grounding at the rendering layer.
 
 ## Repo layout
 

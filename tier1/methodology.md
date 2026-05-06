@@ -7,7 +7,7 @@ This document describes how Tier 1 evals are designed, run, and scored. It is lo
 | Dimension | Choice | Rationale |
 |---|---|---|
 | Task count | **6 in current scaffold** (target before seal: 20 — 7 payments + 7 frontend + 6 ML pipeline) | Methodology validation; not statistically significant at any size. Tier 2 grows to N≥100. |
-| Conditions | 3: baseline (no factbook) / naive grounding (markdown) / Factlet-grounded | The strategic comparison is **with-factbook (any rendering) vs no-factbook**; the naive-vs-grounded split is diagnostic only. The render format is MIT-licensed and copyable, so it isn't the moat. |
+| Conditions | 3: baseline (no factbook) / naive grounding (markdown) / Factlet-grounded | The primary comparison is **with-factbook (any rendering) vs no-factbook**. The naive-vs-grounded split is reported as a diagnostic on whether the structured per-vendor render provides additional lift at the rendering layer beyond naive markdown grounding. |
 | Models | 3: Claude Sonnet 4.6, GPT-4.1, Gemini 2.0 Flash (snapshots pinned in PREREG.md) | Cross-vendor coverage; pinned snapshots for reproducibility. |
 | Temperature | 0 (capability measurement) | One purpose. K=1 acknowledges Tier 1 doesn't characterize stochasticity. Tier 2 adds K=10 at temp=1. Note: temp=0 ≠ bitwise reproducibility (none of the 3 providers guarantee it). |
 | Replicates | K=1 | See above. |

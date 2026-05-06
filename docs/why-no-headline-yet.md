@@ -2,42 +2,42 @@
 
 (And why that's deliberate — not laziness.)
 
-## The skeptic question
+## The question
 
-When the Factlet Protocol launched, the most predictable skeptic question was: *"Show me numbers. Does this actually work compared to alternatives?"*
+When the Factlet Protocol was first proposed, the most predictable question was: *"Does this actually work compared to alternatives? Show numbers."*
 
 The fastest path to a headline number would have been: hand-craft 20 tasks, run baseline-vs-grounded across 3 models, compute "Wrong-answer rate dropped from X% to Y%," publish.
 
-We chose not to.
+That path was rejected on methodology grounds.
 
-## Why publishing a headline at N=20 would have been worse than not publishing
+## Three blockers to a headline at N=20 or smaller
 
-A pre-implementation Principal Engineer review surfaced three blockers:
+A pre-implementation Principal Engineer review surfaced three issues that any responsible eval must address before publishing an aggregate claim:
 
-1. **Sample-size honesty.** N=20 binary outcomes per condition → Wilson 95% CI is ~±20 percentage points. Any "X% → Y%" headline with a ≤20pp delta is inside the noise floor. Reviewers who rerun get a different number; reproducibility claim breaks; credibility taken.
+1. **Sample size.** N=20 binary outcomes per condition → Wilson 95% CI is ~±20 percentage points. Any "X% → Y%" headline with a ≤20pp delta is inside the noise floor. A reviewer who reruns gets a different number; the result is unreproducible by design.
 
-2. **Same-family judge contamination.** If Claude judges Claude's outputs (and the grounded version uses Claude-tuned XML), the first sophisticated reader assumes self-preference. Mitigation requires multi-judge architecture — non-trivial to build right.
+2. **Same-family judge contamination.** When the judge model is from the same family as a generator (e.g., Claude judges Claude), a sophisticated reader assumes self-preference. Defensible aggregate claims require a multi-judge architecture and an explicit robustness check that excludes the same-family judge.
 
-3. **Wrong baseline.** "Baseline = no factbook" is the wrong counterfactual. The real comparison a skeptical engineer wants is: "does the protocol beat me pasting my docs into the system prompt?" That requires a third arm (naive grounding) — not in original scope.
+3. **Counterfactual choice.** "Baseline = no factbook" is the easy comparison. A more demanding comparison is "factbook vs. naive markdown paste" (does structure beat unstructured grounding?) and "factbook vs. retrieval-augmented baseline" (does authored truth beat retrieved chunks?). Tier 1 includes the naive-markdown arm; Tier 2 adds RAG.
 
-A bad headline number costs more credibility than no headline number.
+A headline number that doesn't address these three is more misleading than no headline.
 
-## What we shipped instead
+## What this repo ships instead
 
-**Tier 1 is the methodology, infrastructure, task set, and raw run data. Tier 2 publishes the headline number ~2-4 weeks later.**
+**Tier 1 is the methodology, infrastructure, task set, and raw run data.** A Tier 2 follow-up — N≥100, externally-authored tasks, vanilla-RAG comparator, bootstrap CIs, pre-registered minimum effect size — will be the next milestone where an aggregate claim is on the table.
 
-This is the same pattern MCP used: spec first, reference SDK, then evals + benchmarks 2-3 weeks later as a follow-up "rigorous data" wave. Sequenced credibility instead of one-shot risk.
+This sequencing follows the pattern of other open spec + reference-implementation projects: ship the spec and SDK first, then publish rigorous benchmarking as a separate evidentiary wave.
 
-## What Tier 2 will fix
+## What Tier 2 will add
 
-- N grows from 20 → 100+ tasks
-- ≥5 externally-authored tasks (construct validity)
-- Multi-judge architecture (GPT-4.1 primary, Claude/Gemini secondary), inter-judge agreement reported
+- N grows from current scaffold → 100+ tasks
+- ≥5 externally-authored tasks (construct validity gate)
+- Multi-judge architecture (GPT-4.1 primary, Claude/Gemini secondary) with inter-judge agreement reported per metric
 - Composite objective-heavy headline metric: `must_cite ✓ AND contradictions == 0 AND coverage_honesty ✓ AND quality ≥ 4`
-- Bootstrap task-clustered 95% CIs
+- Bootstrap task-clustered 95% confidence intervals
 - Pre-registered minimum effect size (only publish if CI excludes zero AND point estimate ≥ 15pp)
-- Naive-grounding baseline arm in Tier 1 (already)
-- Vanilla-RAG comparison added in Tier 2
+- Vanilla-RAG comparison arm
+- Vendor-memory comparators (Anthropic Memory, OpenAI Memory) when API stable
 
 ## What you can do now
 
@@ -45,22 +45,11 @@ If you want to test the protocol on your own queries:
 
 1. Clone this repo
 2. Set API keys (Anthropic / OpenAI / Google)
-3. Add your own task YAML in `tier1/tasks/<domain>/`
+3. Add a task YAML under `tier1/tasks/<domain>/`
 4. Run `python runner/run.py` — see your own results
 
-The infrastructure is real; it's the headline that's deferred.
+The infrastructure is real; it's the aggregate claim that's deferred.
 
 ## Reading the open data
 
-`results/YYYY-MM-DD/scored.jsonl` has every individual run with its sub-metric scores. You can compute your own aggregates, draw your own inferences. We publish the data; you draw the conclusions.
-
-## Honest framing for re-distributors
-
-If you're writing about this work, the right framing is:
-
-> "Tier 1 of the open Factlet Protocol evals shipped: methodology, 3 conditions × 3 models × 3 judges, hand-crafted scaffold tasks, full pre-registered design. The repo intentionally defers an aggregate headline number until Tier 2 when N grows to 100+ with externally-authored tasks and bootstrap CIs."
-
-Not:
-> "Factlet Protocol evals show grounded answers reduce X by Y%."
-
-We don't make that claim yet. Don't put it in our mouths.
+`results/YYYY-MM-DD/scored.jsonl` has every individual run with its per-judge per-metric scores. Anyone can compute their own aggregates and draw their own inferences from the raw data.
