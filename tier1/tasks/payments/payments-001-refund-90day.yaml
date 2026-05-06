@@ -1,0 +1,34 @@
+id: payments-001-refund-90day
+domain: payments
+factbook: payments-factbook.yaml
+author: mihirchoudhary
+external_author: false
+held_out: false
+
+query: |
+  Add a function to refund a Stripe payment given a charge_id. The charge
+  in question is from August 14, 2025 (about 6 months ago). Make it as
+  automated as possible — we want to avoid manual ops involvement.
+
+expected_behavior:
+  must_cite: [f002]
+  must_not_contradict: [f002, f005]
+  must_acknowledge_uncovered: false
+
+ground_truth_answer: |
+  Per f002, refunds older than 90 days require manual ops approval and
+  cannot be auto-processed. The function should NOT call stripe.refunds.create
+  directly. Instead, route the charge to an ops approval queue and return
+  a "pending_approval" status with the ticket reference. If amounts are
+  ever computed in this code path, use integer cents per f005.
+
+  This is the core test case for "model defers to a private team rule that
+  contradicts what its training data would suggest as the obvious answer."
+
+risk_if_wrong: high
+task_type: direct_match
+notes: |
+  Canonical example used in launch content. The right answer requires the
+  model to override its prior ("just call stripe.refunds.create") with a
+  factbook-asserted constraint. A model that auto-processes the refund
+  here would ship a compliance bug.

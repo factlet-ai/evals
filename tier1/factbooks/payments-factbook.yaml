@@ -1,0 +1,70 @@
+schema_version: v1.0
+last_updated: 2026-05-04T00:00:00Z
+metadata:
+  name: payments-stripe-example
+  owner: payments-team
+  description: |
+    Sanitized example for a Stripe-based payments service. Demonstrates
+    money handling rules, refund workflow constraints, idempotency,
+    and one supersession showing how the team retired an old assumption.
+
+content:
+  - id: f001
+    statement: "We use Stripe webhooks (not polling) for payment status updates."
+    confidence: 0.95
+    sources: ["docs/payments-arch.md:42", "commit:abc123"]
+    tags: [payments, architecture, stripe]
+    scope_level: team
+
+  - id: f002
+    statement: "Refunds older than 90 days require manual ops approval, never auto-processed."
+    confidence: 1.0
+    sources: ["docs/refund-policy.md:8", "incident:2026-01-15"]
+    tags: [payments, ops, compliance]
+    scope_level: team
+
+  - id: f003
+    statement: "Stripe customer IDs are persisted as strings; never cast to int (overflow risk)."
+    confidence: 1.0
+    sources: ["incident:2026-01-15", "commit:def456"]
+    supersedes: ["f900"]
+    tags: [payments, schema, anti-pattern]
+    scope_level: team
+
+  - id: f004
+    statement: "Idempotency keys for Stripe API calls use UUIDv4; format `{operation}:{uuid}`."
+    confidence: 0.9
+    sources: ["src/payments/stripe_client.py:120", "docs/idempotency.md"]
+    tags: [payments, stripe, reliability]
+    scope_level: team
+
+  - id: f005
+    statement: "All money is stored as integer cents; never as float dollars (precision)."
+    confidence: 1.0
+    sources: ["docs/money-handling.md:1", "src/models/transaction.py:8"]
+    tags: [payments, schema, money, anti-pattern]
+    scope_level: team
+
+  - id: f006
+    statement: "Currency conversion happens only at display time, never in storage."
+    confidence: 1.0
+    sources: ["docs/money-handling.md:18", "src/utils/currency.py:1"]
+    tags: [payments, money, i18n]
+    scope_level: team
+
+  - id: f007
+    statement: "Failed Stripe webhook deliveries retry with exponential backoff up to 24h; after 24h, page on-call."
+    confidence: 0.9
+    sources: ["src/payments/webhook_processor.py:200", "runbook:webhook-failure.md"]
+    tags: [payments, stripe, reliability, ops]
+    scope_level: team
+
+  - id: f900
+    statement: "Stripe customer IDs are stored as integers."
+    confidence: 0.0
+    sources: ["src/legacy/customer.py:45"]
+    archived: true
+    archived_reason: "Replaced by f003 after 2026-01-15 overflow incident."
+    retired_at: "2026-01-16T00:00:00Z"
+    merged_into: f003
+    tags: [archived, anti-pattern]

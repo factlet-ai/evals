@@ -1,0 +1,66 @@
+schema_version: v1.0
+last_updated: 2026-05-04T00:00:00Z
+metadata:
+  name: react-frontend-conventions
+  owner: web-team
+  description: |
+    Sanitized example for a React + TypeScript frontend. Captures
+    framework choices, state management decisions, accessibility
+    rules, and styling conventions an AI would otherwise guess wrong.
+
+content:
+  - id: f001
+    statement: "We use TanStack Query for all server state; never plain useState/useEffect for fetching."
+    confidence: 1.0
+    sources: ["docs/state-management.md:12", "ADR-007.md"]
+    tags: [frontend, react, state-management]
+    scope_level: team
+
+  - id: f002
+    statement: "We do NOT use Redux; we explicitly retired it in 2025-Q4 in favor of TanStack Query + Zustand for local state."
+    confidence: 1.0
+    sources: ["ADR-007.md", "commit:e9f8d7c"]
+    tags: [frontend, anti-pattern, state-management]
+    scope_level: team
+
+  - id: f003
+    statement: "Event handlers MUST use typed `React.MouseEvent<HTMLButtonElement>` (or analogous), never `any`."
+    confidence: 0.95
+    sources: ["eslint.config.js:45", "docs/typescript-conventions.md:8"]
+    tags: [frontend, typescript, conventions]
+    scope_level: team
+
+  - id: f004
+    statement: "All interactive elements MUST have an aria-label OR descriptive text content (a11y audit fails otherwise)."
+    confidence: 1.0
+    sources: ["docs/accessibility.md:1", "test/a11y/audit.test.ts"]
+    tags: [frontend, accessibility, conventions]
+    scope_level: team
+
+  - id: f005
+    statement: "Styling uses Tailwind utility classes; we do NOT write custom CSS files except for `globals.css`."
+    confidence: 0.9
+    sources: ["docs/styling.md:1", "tailwind.config.js"]
+    tags: [frontend, styling, conventions]
+    scope_level: team
+
+  - id: f006
+    statement: "Forms use React Hook Form + Zod schema validation; never raw onChange handlers for form state."
+    confidence: 0.95
+    sources: ["docs/forms.md:1", "src/components/forms/*.tsx"]
+    tags: [frontend, forms, conventions]
+    scope_level: team
+
+  - id: f007
+    statement: "Bundle size budget: main JS chunk MUST stay under 250KB gzipped. CI fails if exceeded."
+    confidence: 1.0
+    sources: ["next.config.js:30", "ci/bundle-size-check.sh"]
+    tags: [frontend, performance, ci]
+    scope_level: team
+
+  - id: f008
+    statement: "Image components MUST use `<Image>` from `next/image` with explicit width/height; never raw `<img>` for production assets."
+    confidence: 0.95
+    sources: ["eslint.config.js:67", "docs/performance.md:22"]
+    tags: [frontend, performance, conventions]
+    scope_level: team

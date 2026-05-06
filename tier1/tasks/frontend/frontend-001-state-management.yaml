@@ -1,0 +1,35 @@
+id: frontend-001-state-management
+domain: frontend
+factbook: frontend-factbook.yaml
+author: mihirchoudhary
+external_author: false
+held_out: false
+
+query: |
+  We need to fetch a list of orders from /api/orders and display them in
+  a table. Set up the state management and the loading state. Show me a
+  React component that does this end-to-end.
+
+expected_behavior:
+  must_cite: [f001]
+  must_not_contradict: [f001, f002]
+  must_acknowledge_uncovered: false
+
+ground_truth_answer: |
+  Per f001, server state goes through TanStack Query (`useQuery`) — never
+  plain useState/useEffect for fetching. The component should use
+  `useQuery({ queryKey: ['orders'], queryFn: ... })` and use the returned
+  isLoading/error/data states.
+
+  Per f002, Redux is explicitly retired in 2025-Q4; the model should not
+  reach for Redux even for shared state.
+
+  Failure mode: model writes a useState + useEffect + fetch combo, which
+  is the most common public-internet answer but explicitly retired here.
+
+risk_if_wrong: medium
+task_type: multi_factlet
+notes: |
+  Tests the "we explicitly retired X" factlet pattern (f002). The model
+  needs both the positive (use TanStack) and negative (don't use Redux)
+  to give a correct answer. Multi-factlet synthesis.

@@ -1,0 +1,66 @@
+schema_version: v1.0
+last_updated: 2026-05-04T00:00:00Z
+metadata:
+  name: ml-training-pipeline
+  owner: ml-platform
+  description: |
+    Sanitized example for an ML training + serving pipeline. Captures
+    data lineage rules, model versioning, evaluation thresholds, and
+    deployment guardrails an AI would otherwise guess wrong.
+
+content:
+  - id: f001
+    statement: "Training data MUST be loaded via the dataset registry (datasets.load_versioned), never directly from raw S3 paths."
+    confidence: 1.0
+    sources: ["docs/data-lineage.md:1", "src/datasets/registry.py:1"]
+    tags: [ml, data-lineage, anti-pattern]
+    scope_level: team
+
+  - id: f002
+    statement: "Models are registered to MLflow with semver tags (e.g. v1.4.2), never auto-incrementing run IDs."
+    confidence: 1.0
+    sources: ["docs/model-versioning.md:8", "scripts/register_model.py:30"]
+    tags: [ml, versioning, mlflow]
+    scope_level: team
+
+  - id: f003
+    statement: "A model MUST pass evaluation thresholds (AUC >= 0.78, latency p99 < 50ms, fairness gap < 0.05) before being eligible for production."
+    confidence: 1.0
+    sources: ["docs/eval-gates.md:1", "ci/promote-to-prod.sh"]
+    tags: [ml, eval, deployment, compliance]
+    scope_level: team
+
+  - id: f004
+    statement: "We use shadow deployment for 7 days minimum before traffic shift; never blue/green for new models."
+    confidence: 0.95
+    sources: ["docs/deployment-strategy.md:18", "ADR-014.md"]
+    tags: [ml, deployment, reliability]
+    scope_level: team
+
+  - id: f005
+    statement: "Feature store reads use the offline store for training and online store for serving; never mix the two for a given pipeline."
+    confidence: 1.0
+    sources: ["docs/feature-store.md:1", "incident:2025-11-30"]
+    tags: [ml, feature-store, anti-pattern]
+    scope_level: team
+
+  - id: f006
+    statement: "PII features MUST be hashed before reaching the training set; raw PII columns are rejected by the data ingest validator."
+    confidence: 1.0
+    sources: ["docs/privacy.md:1", "src/datasets/pii_validator.py"]
+    tags: [ml, privacy, compliance]
+    scope_level: team
+
+  - id: f007
+    statement: "GPU training jobs use the `ml-large` queue; CPU-only jobs use `ml-small`. Cross-queue submission burns budget without producing better results."
+    confidence: 0.85
+    sources: ["docs/compute-queues.md:1", "incident:2026-02-10"]
+    tags: [ml, infra, cost]
+    scope_level: team
+
+  - id: f008
+    statement: "Data drift monitoring runs daily on the previous 24h of production predictions; alerts fire on PSI > 0.2 for any feature."
+    confidence: 0.9
+    sources: ["src/monitoring/drift.py:50", "docs/observability.md:30"]
+    tags: [ml, monitoring, observability]
+    scope_level: team

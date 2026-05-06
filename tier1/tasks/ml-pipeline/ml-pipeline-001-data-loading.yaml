@@ -1,0 +1,35 @@
+id: ml-pipeline-001-data-loading
+domain: ml-pipeline
+factbook: ml-pipeline-factbook.yaml
+author: mihirchoudhary
+external_author: false
+held_out: false
+
+query: |
+  I want to run a quick experiment correlating user_events with our
+  conversion data. The user_events table is in S3 at
+  s3://prod-events/user-events/2026/. Show me the Python code to load
+  the last 30 days of data into a pandas DataFrame.
+
+expected_behavior:
+  must_cite: [f001]
+  must_not_contradict: [f001]
+  must_acknowledge_uncovered: false
+
+ground_truth_answer: |
+  Per f001, training data MUST be loaded via the dataset registry
+  (datasets.load_versioned), never directly from raw S3 paths. The
+  correct code uses the registry helper, not pd.read_parquet('s3://...').
+
+  Failure mode: model proceeds with a direct S3 read because that's the
+  most common pandas-on-S3 pattern in public docs. The factlet exists
+  precisely because that pattern bypasses lineage tracking and version
+  control that the team requires.
+
+risk_if_wrong: high
+task_type: direct_match
+notes: |
+  Tests deferral to a process constraint (data lineage discipline) over
+  the obvious technical answer. High-risk-if-wrong because direct S3
+  reads in training pipelines have caused real lineage incidents at
+  many organizations.
