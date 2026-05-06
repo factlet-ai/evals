@@ -1,5 +1,7 @@
-# Run artifacts (re-runnable from scratch; per-contributor)
-results/
+# Run artifacts (re-runnable from scratch; per-contributor) — except the
+# canonical published runs which we explicitly track for transparency.
+results/*
+!results/v2/
 
 # Python
 __pycache__/

@@ -77,7 +77,13 @@ Cost at the current 6-task scaffold: **~$2.50** (54 generation calls + 810 judge
 
 ## Pre-registration
 
-Tier 1's task set, judge prompts, scoring rubric, and analysis plan are pre-registered before any run. Hashes of all locked artifacts live in [`tier1/PREREG.md`](tier1/PREREG.md). Any change requires a new pre-registration with reason.
+Tier 1's task set, judge prompts, scoring rubric, and analysis plan are pre-registered before any run. The seal recipe (using `git ls-tree` for filesystem-/locale-independent hashing) lives in [`tier1/PREREG.md`](tier1/PREREG.md). Any change requires a new pre-registration with reason.
+
+## Results so far
+
+A first run (N=6 tasks, single-author scaffold) is published for transparency at [`docs/RESULTS-N6-MAY-2026.md`](docs/RESULTS-N6-MAY-2026.md). **Do not extract a single-number headline from this run** — the doc is explicit about why N=6 + single-author can't support that. Per-task heterogeneity (where the factbook helps, where it doesn't) is the substantive finding worth reading.
+
+Raw + scored data: [`results/v2/`](results/v2/).
 
 ## Conditions and methodology
 
