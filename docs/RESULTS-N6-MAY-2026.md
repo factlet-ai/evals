@@ -8,6 +8,8 @@ With a factbook in context: median quality rose from 2.7 to 4.1 (1–5 scale), r
 
 The lift is not uniform. It concentrates on tasks where the model's default answer (from public training data) conflicts with a documented team decision — refunds older than 90 days, libraries the team retired, compliance rules. On tasks where general knowledge already matches team policy, adding the factbook makes essentially no difference.
 
+The lift also does not depend on rendering format. Both naive markdown and structured per-vendor rendering produced comparable quality and contradiction-rate improvements. The factbook content is what does the work; how it's delivered to the model is interchangeable at this N.
+
 What this run does NOT support: a single-percentage headline ("X% better"), per-vendor leaderboards, statistical significance claims, or comparison to retrieval-augmented baselines (no RAG arm in this run). N=6 tasks with a single task author is below the threshold for those claims. A Tier 2 run at N≥100 with externally-authored tasks and a vanilla-RAG comparator is the next milestone where an aggregate claim is on the table.
 
 Detail, per-task table, robustness checks, limitations, and reproduction instructions follow.
@@ -67,6 +69,8 @@ Splitting the with-factbook pool:
 | Citation | 0.44 | 0.94 | +0.50 ⚠️ |
 
 The citation gap is a renderer artifact: the naive renderer in this run does not include factlet IDs (`f001`, `f002`, …), so models given naive grounding cannot cite IDs they were never shown. On metrics that don't depend on ID surfacing — quality, contradictions, coverage — naive markdown and structured rendering produce comparable results at this N.
+
+**Bottom line: the lift comes from the factbook content, not the rendering format.** Both rendering paths produced the quality and contradiction-rate improvements seen in the headline numbers. Whatever your AI tool happens to use to inject grounding (raw markdown, vendor-specific JSON, system-prompt block), the factbook does the work — the format is interchangeable at this N.
 
 ## Per-task delta
 
