@@ -91,21 +91,25 @@ See [`tier1/methodology.md`](tier1/methodology.md) for the full design rationale
 
 ## Contributing tasks
 
-Especially encouraged: **tasks authored by people who are not the Factlet Protocol author.** Construct validity demands external task authorship.
+The single highest-leverage contribution is **a task authored by someone other than the protocol author.** Every task in the current scaffold is mihirchoudhary-authored — that's a real construct-validity hole and we won't run a bigger eval until ≥5 externally-authored tasks land.
 
-To contribute a task:
+**Domains we especially want right now:** security (auth flows, IAM policy, secret handling), devops (Terraform / Kubernetes / CI policies), data engineering (schema decisions, pipeline conventions). Other domains welcome.
 
-1. Pick a domain (payments / frontend / ml-pipeline) — or propose a new one in an issue first.
-2. Read the relevant factbook in `tier1/factbooks/`.
-3. Write a YAML task following the schema in [`tier1/task-schema.md`](tier1/task-schema.md).
-4. Open a PR. Include in the PR body: who you are, your engineering background, whether you have any affiliation with Kernora.
+**The shape of a good task** (full criteria in [CONTRIBUTING.md](CONTRIBUTING.md)): tests a case where the model's training prior is likely to conflict with a documented team-specific decision. Worked example:
+
+> A team retired Redux for state management in 2025-Q4 in favor of TanStack Query. The factbook records this. The task asks the model to "set up state management for an orders table." Without the factbook, the model defaults to Redux (most common public-internet answer). With the factbook, the model uses TanStack and cites the retirement decision. The task tests the model's ability to defer to a documented team decision over its training prior.
+
+That's the [`frontend-001-state-management`](tier1/tasks/frontend/frontend-001-state-management.yaml) task in this repo. It moved quality from 2.0 (without factbook) to 4.67 (with) in the N=6 run — one of the strongest signals in the dataset.
+
+**To contribute:**
+1. **Open a [Task proposal](https://github.com/factlet-ai/evals/issues/new?template=task-proposal.md) issue first** describing the conflict your task tests. Maintainer replies within a week with go / discuss / no-fit.
+2. Once green-lit, write the YAML following [`tier1/task-schema.md`](tier1/task-schema.md), set `external_author: true`, validate locally, open a PR.
+3. Read [CONTRIBUTING.md](CONTRIBUTING.md) for the full process and quality bar.
 
 ## Status of Tier 2 / Tier 3
 
-See `docs/FACTLET-EVALS-BACKLOG.md` in the [main Kernora project](https://kernora.ai) for what's coming. Highlights:
-
-- **Tier 2 (~2-4 weeks)**: N=100+ tasks, externally-authored, bootstrap CIs, multi-judge consensus, vanilla-RAG comparison, **headline aggregate number published**.
-- **Tier 3 (~3 months, alongside spec v0.2)**: conformance test suite, retrieval-quality benchmarks, calibration evals on the protocol's confidence signal (low-confidence-coverage warnings), continuous-eval infrastructure.
+- **Tier 2** (gated on ≥5 externally-authored tasks landing): N grows to ≥100, vanilla-RAG and vendor-Memory comparators added, bootstrap CIs.
+- **Tier 3** (later): conformance test suite, retrieval-quality benchmarks, calibration evals on the protocol's confidence signal, continuous-eval infrastructure.
 
 ## License
 
